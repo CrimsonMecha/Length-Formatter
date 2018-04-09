@@ -146,41 +146,81 @@ void formatter( FILE *ifp, FILE *ofp, int width )
 
 	curr = begin;
 	int total_length = 0;
-	
 
-	while( word != NULL ){
+	// char* ayylmao;
+	// ayylmao = (char *)malloc(MAX_SIZE * width);
+	// int fuckyou  = strlen(curr->str);
+	// fprintf(ofp, "%d", fuckyou);
+	while(curr!=NULL){
 		//finds the end of the line
-		while( curr->num_spaces_after!=0 ){
-			if( total_length + strlen(curr->str)+1 < width ){
-				total_length += strlen(curr->str)+1;
-				//curr->num_spaces_after = 1;
-				curr = curr->next;
+		while( end->num_spaces_after!=0 ){
+			//fprintf(stderr, "%d\n", total_length + strlen(curr->str));
+			if (curr != NULL){
+				if( total_length + strlen(curr->str)+1 < width ){
+					total_length += strlen(curr->str)+1;
+					//fprintf(ofp, "%s", curr->str);
+					//fprintf(ofp, "%d", curr->num_spaces_after);
+					//fprintf(ofp, " ");
+					curr = curr->next;
+				} else {
+					end = curr->prev;
+					end->num_spaces_after = 0;
+					//fprintf(ofp, "%s", end->str);
+					//fprintf(ofp, "{%d}", end->num_spaces_after);
+					//fprintf(ofp, " ");
+					if(curr!=NULL)
+						curr=begin;
+						while(total_length<width){
+							if(curr!=end){
+								curr->num_spaces_after++;
+								total_length++;
+								curr = curr->next;
+							} else {
+								curr = begin;
+							}
+						}
+						total_length=0;
+						//fprintf(ofp, "\n");
+					curr = end;
+				}
 			} else {
-				end = curr->prev;
-				curr->num_spaces_after = 0;
-				curr = begin;
+				break;
 			}
 		}
 
-		//pads spaces til total_length = width
-		while ( total_length != width ){
-			if ( curr != end ){
-				curr->num_spaces_after+=1;
-				total_length+=1;
-				curr = curr->next;
-			} else {
-				curr->num_spaces_after = 0;
-			}
+		if (curr != NULL){
+			begin = end = curr->next;
+			curr = begin;
 		}
 	}
 
+	int total_length1 = 0;
+
+	while(curr!=NULL){
+		//pads spaces til total_length = width
+		while ( total_length <= width ){
+			if ( curr != end && curr != NULL ){
+				curr->num_spaces_after += 1;
+				total_length += 1;
+				curr = curr->next;
+			} else {
+				curr=begin;
+			}
+		}
+
+	}
+
+	//fprintf(ofp, "\n");
+
 	curr = top;
-	// fprintf( ofp, "%s", curr->str );
 	//prints the linked list with # of spaces in between
 	while( curr->next != NULL ){
+		//fprintf( ofp, "{%d}", width);
 		fprintf( ofp, "%s", curr->str );
 		int i;
-		if(curr->num_spaces_after = 0)
+		// fprintf(ofp, "%d", curr->num_spaces_after);
+		// fprintf(ofp, " ");
+		if(curr->num_spaces_after == 0)
 			fprintf( ofp, "%c", '\n' );
 		for(i=0; i<curr->num_spaces_after; i++) {
 			fprintf( ofp, "%c", ' ' );

@@ -1,7 +1,7 @@
 CC = gcc
 SRC = formatter
 EXEC = formatter
-TEXT = shakespeare
+TEXT = hollow
 
 all: $(EXEC) test-me
 
