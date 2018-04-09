@@ -15,7 +15,7 @@
 #include <time.h>
 #include <ctype.h>
 
-// definitions
+/*definitions*/
 #define MAX_SIZE	4
 
 typedef struct list_s {
@@ -26,7 +26,7 @@ typedef struct list_s {
 	int num_spaces_after;
 } list_t; 
 
-// prototypes
+/*prototypes*/
 list_t *make_list( char * );
 char *tokenizer( FILE *ifp);
 
@@ -66,7 +66,7 @@ int main( int argc, char *argv[] )
     return 0;
 }
 
-// get word
+/*get word*/
 char *tokenizer(FILE *ifp)
 {
 	char *buffer, *output;
@@ -106,7 +106,7 @@ char *tokenizer(FILE *ifp)
 	}
 }
 
-// list constructor
+/*list constructor*/
 list_t *make_list( char *s )
 {
 	list_t *ptr;
@@ -121,16 +121,16 @@ list_t *make_list( char *s )
 	return ptr;
 }
 
-// formatter 
+/*formatter*/
 void formatter( FILE *ifp, FILE *ofp, int width )
 {
     char *word;
 	list_t *top = NULL, *curr = NULL, *begin = NULL, *end = NULL;
 
-	// get first word
+	/*get first word*/
 	word = tokenizer( ifp );
 	while ( word != NULL ) {
-		// build linked list
+		/*build linked list*/
 		if ( top == NULL ) {
 			begin = end = curr = top = make_list( word );
 		}
@@ -140,34 +140,23 @@ void formatter( FILE *ifp, FILE *ofp, int width )
 			curr = curr->next;
 		}
 
-		// get next word
+		/*get next word*/
 		word = tokenizer( ifp );
 	}
 
 	curr = begin;
 	int total_length = 0;
 
-	// char* ayylmao;
-	// ayylmao = (char *)malloc(MAX_SIZE * width);
-	// int fuckyou  = strlen(curr->str);
-	// fprintf(ofp, "%d", fuckyou);
 	while(curr!=NULL){
-		//finds the end of the line
+		/*finds the end of the line*/
 		while( end->num_spaces_after!=0 ){
-			//fprintf(stderr, "%d\n", total_length + strlen(curr->str));
 			if (curr != NULL){
 				if( total_length + strlen(curr->str)+1 < width ){
 					total_length += strlen(curr->str)+1;
-					//fprintf(ofp, "%s", curr->str);
-					//fprintf(ofp, "%d", curr->num_spaces_after);
-					//fprintf(ofp, " ");
 					curr = curr->next;
 				} else {
 					end = curr->prev;
 					end->num_spaces_after = 0;
-					//fprintf(ofp, "%s", end->str);
-					//fprintf(ofp, "{%d}", end->num_spaces_after);
-					//fprintf(ofp, " ");
 					if(curr!=NULL)
 						curr=begin;
 						while(total_length<width){
@@ -180,7 +169,6 @@ void formatter( FILE *ifp, FILE *ofp, int width )
 							}
 						}
 						total_length=0;
-						//fprintf(ofp, "\n");
 					curr = end;
 				}
 			} else {
@@ -197,7 +185,7 @@ void formatter( FILE *ifp, FILE *ofp, int width )
 	int total_length1 = 0;
 
 	while(curr!=NULL){
-		//pads spaces til total_length = width
+		/*pads spaces til total_length = width*/
 		while ( total_length <= width ){
 			if ( curr != end && curr != NULL ){
 				curr->num_spaces_after += 1;
@@ -213,13 +201,10 @@ void formatter( FILE *ifp, FILE *ofp, int width )
 	//fprintf(ofp, "\n");
 
 	curr = top;
-	//prints the linked list with # of spaces in between
+	/*prints the linked list with # of spaces in between*/
 	while( curr->next != NULL ){
-		//fprintf( ofp, "{%d}", width);
 		fprintf( ofp, "%s", curr->str );
 		int i;
-		// fprintf(ofp, "%d", curr->num_spaces_after);
-		// fprintf(ofp, " ");
 		if(curr->num_spaces_after == 0)
 			fprintf( ofp, "%c", '\n' );
 		for(i=0; i<curr->num_spaces_after; i++) {
