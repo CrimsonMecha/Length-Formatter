@@ -182,8 +182,6 @@ void formatter( FILE *ifp, FILE *ofp, int width )
 		}
 	}
 
-	int total_length1 = 0;
-
 	while(curr!=NULL){
 		/*pads spaces til total_length = width*/
 		while ( total_length <= width ){
